@@ -11,7 +11,7 @@ type TodoHandler struct { // Struct handler untuk todo.
 	uc usecase.TodoUsecase // Menggunakan TodoUsecase untuk logika bisnis.
 }
 
-func NewTodoHandler(r *gin.Engine, uc usecase.TodoUsecase) { // Fungsi untuk membuat route handler.
+func NewTodoHandler(r * gin.Engine, uc usecase.TodoUsecase) { // Fungsi untuk membuat route handler.
 	h := &TodoHandler{uc: uc} // Inisialisasi TodoHandler dengan usecase.
 
 	// Mendefinisikan route dan mengaitkannya dengan metode handler.	
@@ -22,11 +22,11 @@ func NewTodoHandler(r *gin.Engine, uc usecase.TodoUsecase) { // Fungsi untuk mem
 	r.DELETE("/todos/:id", h.deleteTodo) // Menghapus todo.
 }
 
-func (h *TodoHandler) getTodos(c *gin.Context) { // Metode untuk mendapatkan daftar todo.
+func (h * TodoHandler) getTodos(c * gin.Context) { // Metode untuk mendapatkan daftar todo.
 	c.JSON(http.StatusOK, h.uc.GetTodos()) // Mengembalikan daftar todo dalam format JSON.
 }
 
-func (h *TodoHandler) createTodo(c *gin.Context) { // Metode untuk membuat todo baru.
+func (h * TodoHandler) createTodo(c * gin.Context) { // Metode untuk membuat todo baru.
 	var req struct {
 		Title string `json:"title"`//binding:"required"` // Judul todo yang diterima dari request JSON.
 	}
@@ -40,7 +40,7 @@ func (h *TodoHandler) createTodo(c *gin.Context) { // Metode untuk membuat todo 
 	c.JSON(http.StatusCreated, todo)// Mengembalikan todo yang baru dibuat dalam format JSON.
 }
 
-func (h *TodoHandler) toggleTodo(c *gin.Context) { // Metode untuk mengubah status todo.
+func (h * TodoHandler) toggleTodo(c * gin.Context) { // Metode untuk mengubah status todo.
 	id, _ := strconv.Atoi(c.Param("id")) // Mengonversi ID todo dari string ke integer.
 	todo, ok := h.uc.ToggleStatus(id) // Mengubah status todo menggunakan usecase.
 
@@ -52,7 +52,7 @@ func (h *TodoHandler) toggleTodo(c *gin.Context) { // Metode untuk mengubah stat
 	c.JSON(http.StatusOK, todo)// Mengembalikan todo yang diperbarui dalam format JSON.
 }
 
-func (h *TodoHandler) deleteTodo(c *gin.Context) { // Metode untuk menghapus todo.
+func (h * TodoHandler) deleteTodo(c * gin.Context) { // Metode untuk menghapus todo.
 	id, _ := strconv.Atoi(c.Param("id")) // Mengonversi ID todo dari string ke integer.
 	if !h.uc.RemoveTodo(id) { // Menghapus todo menggunakan usecase.
 		c.JSON(http.StatusNotFound, gin.H{"message": "todo not found"}) // Mengembalikan kesalahan jika todo tidak ditemukan.
